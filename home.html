@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reaction Test</title>
+    <link rel="icon" href="https://img.favpng.com/21/20/10/timer-icon-png-favpng-EqsU36MhYsih9v3uNTQMgQdYL.jpg">
+    <link rel="stylesheet" href="styles/home.css">
+</head>
+<body>
+    <script>
+        let debounce = false
+        let canClick = false
+        let interval
+        let miliseconds = 0
+        let seconds = 0
+    </script>
+    <button id="game">
+        <span id="text1">
+            Reaction Test
+        </span><br>
+        <span id="text2">
+            Click anywhere to start!
+        </span>
+        <script>
+            document.getElementById("game").addEventListener("click", function() {
+                let game = document.getElementById("game")
+                let text1 = document.getElementById('text1')
+                let text2 = document.getElementById('text2')
+                if (debounce == false && canClick == false) {
+                    debounce = true
+                    canClick = false
+                    game.style.backgroundColor = "red"
+
+                    function randomIntFromInterval(min, max) {
+                        return Math.floor(Math.random() * (max - min + 1) + min)
+                    }
+
+                    text1.innerHTML = "Prepare to Click..."
+                    text2.innerHTML = ""
+
+                    setTimeout(() => {
+                        text1.innerHTML = "CLICK!"
+                        game.style.backgroundColor = "green"
+                        seconds = 0
+                        miliseconds = 0
+                        canClick = true
+                        interval = setInterval(() => {
+                            miliseconds += 1
+                            if (miliseconds == 1000) {
+                                miliseconds = 0
+                                seconds += 1
+                            }
+                        }, 1);
+                    }, randomIntFromInterval(3,6) * 1000);
+                }
+                if (debounce == true & canClick == true) {
+                    text1.innerHTML = `YOU SCORED`
+                    text2.innerHTML = `${seconds}s:${miliseconds}ms`
+                    clearInterval(interval)
+                    setTimeout(() => {
+                        debounce = false
+                        canClick = false
+                        text1.innerHTML = "Reaction Test"
+                        text2.innerHTML = "Click anywhere to start!"
+                        game.style.backgroundColor = "aqua"
+                    }, 4000);
+                }
+            })
+        </script>
+    </button>
+</body>
+</html>
